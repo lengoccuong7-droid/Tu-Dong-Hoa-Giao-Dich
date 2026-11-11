@@ -4,7 +4,7 @@ import urllib.parse
 # Cấu hình giao diện trang web
 st.set_page_config(page_title="Phân tích Cổ phiếu 5 Màn hình", layout="centered")
 
-# Khởi tạo quản lý trạng thái màn hình và dữ liệu (Trống hoàn toàn)
+# Khởi tạo trạng thái
 if "step" not in st.session_state:
     st.session_state.step = 0
 if "stock_code" not in st.session_state:
@@ -36,14 +36,12 @@ elif st.session_state.step == 1:
     st.subheader(f"Màn hình 1: Lấy dữ liệu 30 phiên OHLCV ({st.session_state.stock_code})")
     
     prompt_m1 = f"Trích xuất bảng dữ liệu 30 phiên giao dịch gần nhất bao gồm các thông số OHLCV (Open, High, Low, Close, Volume) của mã cổ phiếu {st.session_state.stock_code}."
-    st.text_area("Câu lệnh tự động:", value=prompt_m1, disabled=True)
     
-    # Tạo link mở nhanh Gemini kèm câu lệnh được mã hóa URL
-    encoded_prompt = urllib.parse.quote(prompt_m1)
-    gemini_url = f"https://gemini.google.com/?q={encoded_prompt}"
+    st.info("💡 Hướng dẫn: Bấm nút Copy bên dưới, sau đó mở app Gemini dán vào ô chat.")
+    st.text_area("Câu lệnh tự động sẵn có:", value=prompt_m1, disabled=True)
     
-    # Hiển thị nút mở Gemini trực tiếp
-    st.markdown(f'<a href="{gemini_url}" target="_blank"><button style="width:100%; background-color:#10b981; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở Gemini để lấy dữ liệu OHLCV</button></a>', unsafe_allow_html=True)
+    # Nút mở nhanh app/web Gemini
+    st.markdown('<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#3b82f6; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở nhanh ứng dụng/web Gemini</button></a>', unsafe_allow_html=True)
     
     raw_input = st.text_area("Dán dữ liệu thô nhận được từ Gemini vào đây:", placeholder="Dán bảng dữ liệu 30 phiên OHLCV...")
     
@@ -83,13 +81,10 @@ elif st.session_state.step == 3:
 1. Trường hợp CHƯA CÓ HÀNG: Điểm mua tích lũy, tỷ trọng giải ngân, vùng cắt lỗ.
 2. Trường hợp ĐÃ CÓ HÀNG: Điểm gia tăng tỷ trọng, điểm chốt lời ngắn hạn, thời điểm hạ tỷ trọng an toàn."""
     
+    st.info("💡 Hướng dẫn: Copy câu lệnh chiến lược dưới đây dán vào Gemini.")
     ai_prompt = st.text_area("Câu lệnh gửi Gemini phân tích kỹ thuật & T+:", value=prompt_m3, height=180)
     
-    # Tạo link mở nhanh Gemini cho màn hình 3
-    encoded_prompt_m3 = urllib.parse.quote(ai_prompt)
-    gemini_url_m3 = f"https://gemini.google.com/?q={encoded_prompt_m3}"
-    
-    st.markdown(f'<a href="{gemini_url_m3}" target="_blank"><button style="width:100%; background-color:#10b981; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở Gemini để nhận phân tích chiến lược T+</button></a>', unsafe_allow_html=True)
+    st.markdown('<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#3b82f6; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở nhanh ứng dụng/web Gemini</button></a>', unsafe_allow_html=True)
     
     ai_input_result = st.text_area("Dán kết quả phân tích từ Gemini vào đây:", placeholder="Dán nội dung phân tích chiến lược T+...")
     
