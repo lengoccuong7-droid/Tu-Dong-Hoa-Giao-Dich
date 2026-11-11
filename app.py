@@ -39,7 +39,6 @@ elif st.session_state.step == 1:
     st.markdown("👇 **Câu lệnh tự động (Copy câu lệnh này trước):**")
     st.code(prompt_m1, language="text")
     
-    # NÚT TÍCH HỢP KÉP: Vừa mở Gemini vừa hỗ trợ chuyển tiếp
     st.markdown(f'<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#10b981; color:white; padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-bottom:15px;">🌐 Mở Web Gemini & Sang màn hình Excel</button></a>', unsafe_allow_html=True)
     
     raw_input = st.text_area("👇 **Dán dữ liệu thô nhận được từ Gemini vào đây:**", placeholder="Dán bảng dữ liệu 30 phiên OHLCV...")
@@ -72,18 +71,22 @@ elif st.session_state.step == 2:
         st.session_state.step = 3
         st.rerun()
 
-# ================= MÀN HÌNH 3: YÊU CẦU PHÂN TÍCH CHIẾN LƯỢC T+ =================
+# ================= MÀN HÌNH 3: YÊU CẦU PHÂN TÍCH CHIẾN LƯỢC T+ (TÍCH HỢP DỮ LIỆU MH2) =================
 elif st.session_state.step == 3:
     st.subheader(f"Màn hình 3: Yêu cầu phân tích & Chiến lược T+ ({st.session_state.stock_code})")
     
-    prompt_m3 = f"""Dựa vào bảng dữ liệu OHLCV 30 phiên của mã {st.session_state.stock_code} đã chuẩn hóa, hãy phân tích kỹ thuật (xu hướng dòng tiền, hỗ trợ/kháng cự) và đưa ra chiến lược giao dịch T+ chi tiết cho 2 kịch bản:
+    # Tự động đính kèm dữ liệu thô từ màn hình 2 vào câu hỏi gửi sang Gemini
+    prompt_m3 = f"""Dựa vào bảng dữ liệu OHLCV 30 phiên đã chuẩn hóa của mã {st.session_state.stock_code} dưới đây:
+---
+{st.session_state.raw_data}
+---
+Hãy phân tích kỹ thuật (xu hướng dòng tiền, hỗ trợ/kháng cự) và đưa ra chiến lược giao dịch T+ chi tiết cho 2 kịch bản:
 1. Trường hợp CHƯA CÓ HÀNG: Điểm mua tích lũy, tỷ trọng giải ngân, vùng cắt lỗ.
 2. Trường hợp ĐÃ CÓ HÀNG: Điểm gia tăng tỷ trọng, điểm chốt lời ngắn hạn, thời điểm hạ tỷ trọng an toàn."""
     
-    st.markdown("👇 **Câu lệnh phân tích T+ (Copy câu lệnh này trước):**")
+    st.markdown("👇 **Câu lệnh chiến lược T+ (Đã đính kèm dữ liệu Màn hình 2 - Copy câu lệnh này):**")
     st.code(prompt_m3, language="text")
     
-    # NÚT TÍCH HỢP KÉP CHO MÀN HÌNH 3
     st.markdown(f'<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#10b981; color:white; padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin-bottom:15px;">🌐 Mở Web Gemini & Nhận phân tích</button></a>', unsafe_allow_html=True)
     
     ai_input_result = st.text_area("👇 **Dán kết quả phân tích từ Gemini vào đây:**", placeholder="Dán nội dung phân tích chiến lược T+...")
@@ -109,7 +112,7 @@ elif st.session_state.step == 5:
     
     st.success(f"Hoàn tất quy trình phân tích cho mã cổ phiếu: **{st.session_state.stock_code}**")
     st.markdown("- **Trạng thái dữ liệu Excel:** Đã chuẩn hóa 30 phiên OHLCV.")
-    st.markdown("- **Chiến lược T+ (AI):** Đã cập nhật thành công từ kết quả phân tích thực tế.")
+    st.markdown("- **Chiến lược T+ (AI):** Đã cập nhật thành công dựa trên dữ liệu đã đính kèm.")
     
     if st.button("Nhấn lưu hồ sơ đầu tư", type="primary"):
         st.success(f"Đã lưu thành công hồ sơ đầu tư cho mã {st.session_state.stock_code} vào hệ thống!")
