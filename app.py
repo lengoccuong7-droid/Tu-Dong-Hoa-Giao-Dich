@@ -1,10 +1,9 @@
 import streamlit as st
-import urllib.parse
 
-# Cấu hình giao diện trang web
+# Cấu hình giao diện trang web trên di động
 st.set_page_config(page_title="Phân tích Cổ phiếu 5 Màn hình", layout="centered")
 
-# Khởi tạo trạng thái
+# Khởi tạo quản lý trạng thái màn hình và dữ liệu trống
 if "step" not in st.session_state:
     st.session_state.step = 0
 if "stock_code" not in st.session_state:
@@ -37,11 +36,10 @@ elif st.session_state.step == 1:
     
     prompt_m1 = f"Trích xuất bảng dữ liệu 30 phiên giao dịch gần nhất bao gồm các thông số OHLCV (Open, High, Low, Close, Volume) của mã cổ phiếu {st.session_state.stock_code}."
     
-    st.info("💡 Hướng dẫn: Bấm nút Copy bên dưới, sau đó mở app Gemini dán vào ô chat.")
-    st.text_area("Câu lệnh tự động sẵn có:", value=prompt_m1, disabled=True)
+    st.markdown("👇 **Bấm vào biểu tượng Copy ở góc phải ô dưới để sao chép lệnh:**")
+    st.code(prompt_m1, language="text")
     
-    # Nút mở nhanh app/web Gemini
-    st.markdown('<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#3b82f6; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở nhanh ứng dụng/web Gemini</button></a>', unsafe_allow_html=True)
+    st.markdown('<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#10b981; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở ứng dụng/web Gemini để dán lệnh</button></a>', unsafe_allow_html=True)
     
     raw_input = st.text_area("Dán dữ liệu thô nhận được từ Gemini vào đây:", placeholder="Dán bảng dữ liệu 30 phiên OHLCV...")
     
@@ -66,7 +64,7 @@ elif st.session_state.step == 2:
         table_data = [{"Phiên": f"Phiên {i+1}", "Dữ liệu gốc": line} for i, line in enumerate(lines)]
         st.dataframe(table_data, use_container_width=True)
     else:
-        st.warning("Chưa có dữ liệu thô. Hiển thị bảng trống để chỉnh sửa.")
+        st.warning("Chưa có dữ liệu thô. Hiển thị bảng trống để chỉnh sửa thủ công.")
         st.dataframe([{"Phiên": "---", "Open": "---", "High": "---", "Low": "---", "Close": "---", "Volume": "---"}], use_container_width=True)
         
     if st.button("Tiếp tục (Sang màn hình phân tích T+)", type="primary"):
@@ -81,10 +79,10 @@ elif st.session_state.step == 3:
 1. Trường hợp CHƯA CÓ HÀNG: Điểm mua tích lũy, tỷ trọng giải ngân, vùng cắt lỗ.
 2. Trường hợp ĐÃ CÓ HÀNG: Điểm gia tăng tỷ trọng, điểm chốt lời ngắn hạn, thời điểm hạ tỷ trọng an toàn."""
     
-    st.info("💡 Hướng dẫn: Copy câu lệnh chiến lược dưới đây dán vào Gemini.")
-    ai_prompt = st.text_area("Câu lệnh gửi Gemini phân tích kỹ thuật & T+:", value=prompt_m3, height=180)
+    st.markdown("👇 **Bấm vào biểu tượng Copy ở góc phải ô dưới để sao chép lệnh phân tích:**")
+    st.code(prompt_m3, language="text")
     
-    st.markdown('<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#3b82f6; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở nhanh ứng dụng/web Gemini</button></a>', unsafe_allow_html=True)
+    st.markdown('<a href="https://gemini.google.com" target="_blank"><button style="width:100%; background-color:#10b981; color:white; padding:10px; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:10px;">🌐 Mở ứng dụng/web Gemini để nhận phân tích</button></a>', unsafe_allow_html=True)
     
     ai_input_result = st.text_area("Dán kết quả phân tích từ Gemini vào đây:", placeholder="Dán nội dung phân tích chiến lược T+...")
     
